@@ -27,3 +27,8 @@ export const createRoom = (formData) => {
 export const getRoomsByHotelId = (hotelId) => {
     return axios.get(`${REST_API_BASE_URL}/rooms/hotel/${hotelId}`);
   };
+
+
+  export const bookRoom = (bookingData) => {
+    return axios.post(`${REST_API_BASE_URL}/bookings`, bookingData);
+};

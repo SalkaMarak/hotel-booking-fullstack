@@ -9,6 +9,7 @@ import HotelRegistration from './components/HotelRegistration'
 import HotelList from './components/HotelList'
 import AddRoom from './components/AddRoom'
 import RoomList from './components/RoomList'
+import Booking from './components/Booking'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -27,6 +28,7 @@ function App() {
             <Route path="/hotelList" element = { <HotelList/> } ></Route>
             <Route path="/add-room/:hotelId" element={<AddRoom />} />
             <Route path="/rooms/:hotelId" element={<RoomList />} />
+            <Route path="/book-room/:roomId" element={<Booking />} />
           </Routes>
         {/* </FooterComponent> */}
       </BrowserRouter>
