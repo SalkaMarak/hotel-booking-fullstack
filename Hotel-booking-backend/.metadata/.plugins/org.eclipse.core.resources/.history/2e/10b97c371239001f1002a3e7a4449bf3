@@ -1,0 +1,72 @@
+package com.excelr.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.excelr.service.config.UserInfoUserDetailsService;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AppConfig {
+
+    // Static admin credentials
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
+    private static final String ADMIN_ROLE = "ADMIN";
+
+    @Bean
+    public UserDetailsService userDetServ() {
+        // Create admin user statically
+        UserDetails admin = User.builder()
+                .username(ADMIN_USERNAME)
+                .password(encode().encode(ADMIN_PASSWORD))
+                .roles(ADMIN_ROLE)
+                .build();
+
+        // Use InMemoryUserDetailsManager to manage admin user
+        return new InMemoryUserDetailsManager(admin);
+    }
+
+    @Bean
+    public PasswordEncoder encode() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider provider() {
+        DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
+        dao.setUserDetailsService(userDetServ());
+        dao.setPasswordEncoder(encode());
+        return dao;
+    }
+
+    @Bean
+    public SecurityFilterChain filter(HttpSecurity http) throws Exception {
+        return http.csrf().disable()
+				.authorizeHttpRequests()
+				.requestMatchers("/api/users", "/api/new")
+				.permitAll()
+				.and()
+				.authorizeHttpRequests()
+				.requestMatchers("/product/all")
+				.hasRole("ADMIN")
+				.and().authorizeHttpRequests()
+				.requestMatchers("/product/**")
+				.hasRole("USER")
+				//.authenticated() use this when using annotation instead
+				.and().formLogin().and().build();
+    }
+}

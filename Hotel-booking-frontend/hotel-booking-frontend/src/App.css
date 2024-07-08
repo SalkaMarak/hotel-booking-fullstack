@@ -1,0 +1,99 @@
+*{
+  font-family: sans-serif;
+}
+.registration{
+  color: rgb(0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-image: url("https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.registration h2{
+  text-align: center;
+  color: rgb(231, 234, 182);
+}
+.welcome{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-image: url("https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-decoration: none;
+}
+.welcome p{
+  color: rgba(240, 240, 239, 0.785);
+}
+.welcome h1{
+  color: rgba(255, 255, 255, 0.735);
+  background-color: rgba(54, 54, 54, 0.237);
+}
+.welcome ul li a{
+  color: rgba(165, 249, 46, 0.543);
+}
+.registration input {
+  background-color: rgba(255, 255, 255, 0.226);
+  border:white;
+}
+
+/* Hotels */
+.hotel-list {
+  padding: 20px;
+}
+
+.hotel-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.hotel-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.hotel-card img {
+  max-width: 100%;
+  height: Auto;
+  background-size: contain;
+  display: block;
+  margin: 10px 0;
+}
+
+.hotel-card h3 {
+  margin-top: 0;
+}
+
+.amenities ul {
+  padding-left: 20px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}

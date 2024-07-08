@@ -1,0 +1,42 @@
+package com.excelr.controller;
+
+import com.excelr.entity.User;
+import com.excelr.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @Autowired
+    private UserService customerService;
+
+    @GetMapping
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public List<User> getAllCustomers() {
+        return customerService.getAllCustomers();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getCustomerById(@PathVariable Long id) {
+        User customer = customerService.getCustomerById(id);
+        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/new")
+    public User createCustomer(@RequestBody User customer) {
+        return customerService.saveCustomer(customer);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+        customerService.deleteCustomer(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+

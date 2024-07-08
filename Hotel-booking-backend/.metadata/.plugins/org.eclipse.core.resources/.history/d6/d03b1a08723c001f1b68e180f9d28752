@@ -1,0 +1,19 @@
+package com.excelr.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
+@Entity
+public class RoomImage {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Lob
+    private byte[] data;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+}
