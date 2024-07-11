@@ -4,6 +4,8 @@ import lombok.Data;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Data
 @Entity
 public class Room {
@@ -21,4 +23,8 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomImage> images;
+    
+    @OneToMany(mappedBy = "room")
+    @JsonManagedReference
+    private List<Booking> bookings;
 }

@@ -32,3 +32,11 @@ export const getRoomsByHotelId = (hotelId) => {
   export const bookRoom = (bookingData) => {
     return axios.post(`${REST_API_BASE_URL}/bookings`, bookingData);
 };
+
+export const createBooking = (bookingData) => {
+    return axios.post(`${REST_API_BASE_URL}/bookings`, bookingData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+};

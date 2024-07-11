@@ -28,10 +28,10 @@ const AddRoom = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const roomDetails = {
             roomType: formData.roomType,
-            numberOfRooms: formData.numberOfRooms,
+            numberOfRoomsAvailable: formData.numberOfRooms,  
             pricePerNight: formData.pricePerNight,
             hotelId: hotelId
         };
@@ -46,7 +46,7 @@ const AddRoom = () => {
         try {
             const response = await createRoom(formDataToSend);
             console.log('Room created:', response.data);
-            navigate('/hotels'); // Navigate to hotel list or another relevant page
+            navigate('/hotelList');
         } catch (error) {
             console.error('Error creating room:', error);
         }

@@ -11,7 +11,6 @@ public class BookingDTO {
     private Long roomId;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private Double totalCost;
     private String customerName;
     private String customerEmail;
 }

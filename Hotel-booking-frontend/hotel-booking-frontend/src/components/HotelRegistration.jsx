@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { registerHotel } from '../services/ServiceConfig';
+import { useNavigate } from 'react-router-dom';
 
 const HotelRegistration = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ const HotelRegistration = () => {
         amenities: '',
         images: [],
     });
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         if (e.target.name === 'images') {
@@ -47,6 +50,7 @@ const HotelRegistration = () => {
             const response = await registerHotel(formDataToSend);
             console.log(response);
             console.log("Registered successfully");
+            navigate("/hotelList")
         } catch (error) {
             console.error(error);
         }

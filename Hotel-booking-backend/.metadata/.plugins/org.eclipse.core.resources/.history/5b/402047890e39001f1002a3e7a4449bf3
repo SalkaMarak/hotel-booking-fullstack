@@ -1,5 +1,0 @@
-package com.excelr.config;
-
-public class CorsConfig {
-
-}

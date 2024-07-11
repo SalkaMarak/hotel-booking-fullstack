@@ -28,7 +28,7 @@ const RoomList = () => {
           return (
             <div key={room.id} className="hotel-card">
               <h3>{room.roomType}</h3>
-              <p><strong>Number of Rooms Available:</strong> {room.numberOfRooms}</p>
+              <p><strong>Number of Rooms Available:</strong> {room.numberOfRoomsAvailable}</p>
               <p><strong>Price Per Night:</strong> {room.pricePerNight}</p>
               <div className="hotel-images">
                 {room.images.map((image, index) => (

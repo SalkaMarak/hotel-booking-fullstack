@@ -30,7 +30,7 @@ public class Hotel {
     private List<String> amenities;
     // Ensure to add @JsonBackReference to prevent recursion
     @JsonManagedReference
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY,  orphanRemoval = true)
     private List<HotelImage> images = new ArrayList<>();
 
 }

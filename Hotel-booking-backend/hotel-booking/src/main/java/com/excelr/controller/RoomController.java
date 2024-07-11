@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.excelr.dto.RoomDTO;
+import com.excelr.entity.Room;
 import com.excelr.service.RoomService;
 
 import java.io.IOException;
@@ -31,6 +32,8 @@ public class RoomController {
 
         return roomService.createRoom(roomDTO);
     }
+    //MultipartFile is used to represent a file that is received in a multipart request, such as a file upload form.
+    //every image byte array -> Base64 encoded string
 
     @PutMapping("/{id}")
     public RoomDTO updateRoom(@PathVariable Long id, @RequestPart("room") RoomDTO roomDTO, @RequestPart("images") List<MultipartFile> images) throws IOException {

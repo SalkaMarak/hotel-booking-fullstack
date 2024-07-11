@@ -3,7 +3,11 @@ package com.excelr.controller;
 import com.excelr.dto.BookingDTO;
 import com.excelr.entity.Booking;
 import com.excelr.service.BookingService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,5 +25,10 @@ public class BookingController {
     @PutMapping("/cancel/{id}")
     public Booking cancelBooking(@PathVariable Long id) {
         return bookingService.cancelBooking(id);
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<Booking>> getAll(){
+    	return ResponseEntity.ok(bookingService.getAllBookings());
     }
 }

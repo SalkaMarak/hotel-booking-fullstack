@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class BookingService {
@@ -24,11 +25,14 @@ public class BookingService {
         Room room = roomRepository.findById(bookingDTO.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid room ID"));
 
+        long nights = ChronoUnit.DAYS.between(bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate());
+        double totalCost = nights * room.getPricePerNight();
+
         Booking booking = new Booking();
         booking.setRoom(room);
         booking.setCheckInDate(bookingDTO.getCheckInDate());
         booking.setCheckOutDate(bookingDTO.getCheckOutDate());
-        booking.setTotalCost(bookingDTO.getTotalCost());
+        booking.setTotalCost(totalCost);
         booking.setCustomerName(bookingDTO.getCustomerName());
         booking.setCustomerEmail(bookingDTO.getCustomerEmail());
         booking.setCancellationStatus(false);
@@ -67,5 +71,9 @@ public class BookingService {
         } else {
             return 0.0;
         }
+    }
+    
+    public List<Booking> getAllBookings(){
+    	return bookingRepository.findAll();
     }
 }

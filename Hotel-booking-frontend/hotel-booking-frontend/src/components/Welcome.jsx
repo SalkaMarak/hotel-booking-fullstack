@@ -11,6 +11,7 @@ function Welcome() {
         {/* <li><a href='/adminLogin'>Admin Login</a></li> */}
         <li><a href='/registerHotel'>Register Hotel</a></li>
         <li><a href='/hotelList'>Hotel List</a></li>
+        <li><a href='/bookingList'>Booking List</a></li>
       </ul>
     </div>
   )
