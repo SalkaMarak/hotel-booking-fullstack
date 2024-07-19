@@ -1,0 +1,58 @@
+package com.excelr.service;
+
+import com.excelr.dto.BookingDTO;
+import com.excelr.entity.Booking;
+import com.excelr.entity.Customer;
+import com.excelr.entity.Room;
+import com.excelr.dao.BookingRepository;
+import com.excelr.dao.CustomerRepository;
+import com.excelr.dao.RoomRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.temporal.ChronoUnit;
+
+@Service
+public class BookingService {
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    public Booking createBooking(BookingDTO bookingDTO) {
+        Room room = roomRepository.findById(bookingDTO.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid room ID"));
+
+        Customer customer = customerRepository.findById(bookingDTO.getCustomerId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
+
+        if (room.isBooked()) {
+            throw new IllegalStateException("Room is already booked");
+        }
+
+        // Calculate total cost based on room price and duration
+        long nights = ChronoUnit.DAYS.between(bookingDTO.getCheckInDate(), bookingDTO.getCheckOutDate());
+        double totalCost = nights * room.getPricePerNight();
+
+        Booking booking = new Booking();
+        booking.setRoom(room);
+        booking.setCheckInDate(bookingDTO.getCheckInDate());
+        booking.setCheckOutDate(bookingDTO.getCheckOutDate());
+        booking.setTotalCost(totalCost);
+        booking.setCustomerName(bookingDTO.getCustomerName());
+        booking.setCustomerEmail(bookingDTO.getCustomerEmail());
+        booking.setCancellationStatus(false);
+        booking.setRefundAmount(0.0);
+        booking.setCustomer(customer); // Set the customer
+
+        room.setBooked(true); // Mark room as booked
+        roomRepository.save(room); // Save room status
+
+        return bookingRepository.save(booking);
+    }
+}

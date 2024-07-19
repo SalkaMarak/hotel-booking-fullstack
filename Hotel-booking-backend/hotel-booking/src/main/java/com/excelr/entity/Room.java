@@ -14,7 +14,8 @@ public class Room {
     private Long id;
 
     private String roomType;
-    private int numberOfRoomsAvailable;
+    @Column(name = "is_booked")
+    private boolean isBooked;
     private double pricePerNight;
 
     @ManyToOne

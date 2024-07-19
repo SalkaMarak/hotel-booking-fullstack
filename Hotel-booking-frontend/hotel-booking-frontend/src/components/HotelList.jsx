@@ -4,6 +4,8 @@ import { getAllHotels } from '../services/ServiceConfig';
 
 const HotelList = () => {
   const [hotels, setHotels] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredHotels, setFilteredHotels] = useState([]);
 
   useEffect(() => {
     fetchHotels();
@@ -13,16 +15,40 @@ const HotelList = () => {
     try {
       const response = await getAllHotels();
       setHotels(response.data);
+      setFilteredHotels(response.data);  // Initialize filtered hotels
     } catch (error) {
       console.error("Error fetching hotels:", error);
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchClick = () => {
+    const filtered = hotels.filter(hotel =>
+      hotel.address.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredHotels(filtered);
+  };
+
   return (
     <div className="hotel-list">
       <h2>Hotel List</h2>
+      <hr/>
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by location..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+        <button onClick={handleSearchClick}>Search</button>
+      </div>
+      <hr/>
       <div className="hotel-list-container">
-        {hotels.map(hotel => (
+        {filteredHotels.map(hotel => (
           <div key={hotel.id} className="hotel-card">
             <h3>{hotel.name}</h3>
             <p><strong>Address:</strong> {hotel.address}</p>

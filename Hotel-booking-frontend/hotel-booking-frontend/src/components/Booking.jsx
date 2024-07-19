@@ -12,6 +12,10 @@ const BookingForm = () => {
         customerEmail: ''
     });
 
+    // Fetch customer data from localStorage
+    const customerJSON = localStorage.getItem('customer');
+    const customer = customerJSON ? JSON.parse(customerJSON) : null;
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -21,9 +25,17 @@ const BookingForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Check if customer data exists in localStorage
+        if (!customer) {
+            console.error('Customer data not found in localStorage');
+            return;
+        }
+
         const bookingData = {
             ...formData,
-            roomId: parseInt(roomId)
+            roomId: parseInt(roomId),
+            customerId: customer.id  // Use customer id from localStorage
         };
 
         try {

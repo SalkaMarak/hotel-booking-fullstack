@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Getter
 @Setter
@@ -21,9 +22,10 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
-    @JsonBackReference
+    //@JsonBackReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookings"})
     private Room room;
 
     @Column(name = "check_in_date")
@@ -46,4 +48,9 @@ public class Booking {
 
     @Column(name = "refund_amount")
     private Double refundAmount;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("bookings")
+    @JoinColumn(name = "customer_id")
+    private Customer customer; 
 }

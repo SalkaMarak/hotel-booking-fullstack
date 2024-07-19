@@ -1,0 +1,48 @@
+.bookings-list {
+    margin: 0 auto;
+}
+
+.bookings-list h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.bookings-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.bookings-list table, th, td {
+    border: 1px solid #ddd;
+}
+
+.bookings-list th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+.bookings-list th {
+    background-color: #f2f2f2;
+}
+
+.bookings-list tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.bookings-list tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.bookings-list button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.bookings-list button:hover {
+    background-color: #ff1a1a;
+}

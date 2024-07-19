@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getRoomsByHotelId } from '../services/ServiceConfig';
+import { getRoomsByHotelId, getHotelById } from '../services/ServiceConfig'; // Import the new API call
 
 const RoomList = () => {
   const { hotelId } = useParams();
   const [rooms, setRooms] = useState([]);
+  const [hotelName, setHotelName] = useState('');
 
   useEffect(() => {
     fetchRooms();
+    fetchHotelName(); // Fetch the hotel name as well
   }, [hotelId]);
 
   const fetchRooms = async () => {
@@ -19,31 +21,42 @@ const RoomList = () => {
     }
   };
 
+  const fetchHotelName = async () => {
+    try {
+      const response = await getHotelById(hotelId); // Assume this API call fetches hotel details
+      setHotelName(response.data.name); // Adjust according to your API response structure
+    } catch (error) {
+      console.error("Error fetching hotel name:", error);
+    }
+  };
+
   return (
     <div className="hotel-list">
-      <h2>Room List for Hotel ID: {hotelId}</h2>
+      <h2>Room List for {hotelName || 'Loading...'}</h2> {/* Show loading text until hotel name is fetched */}
       <div className="hotel-list-container">
         {rooms.map(room => {
           const pricePerNight = room.pricePerNight; // Store pricePerNight in a variable
           return (
             <div key={room.id} className="hotel-card">
               <h3>{room.roomType}</h3>
-              <p><strong>Number of Rooms Available:</strong> {room.numberOfRoomsAvailable}</p>
+              <p><strong>Status:</strong> {room.booked ? 'Booked' : 'Available'}</p>
               <p><strong>Price Per Night:</strong> {room.pricePerNight}</p>
               <div className="hotel-images">
                 {room.images.map((image, index) => (
-                  <img key={index} src={`data:image/jpeg;base64,${image}`} alt={`Hotel Image ${index + 1}`} />
+                  <img key={index} src={`data:image/jpeg;base64,${image}`} alt={`Room Image ${index + 1}`} />
                 ))}
               </div>
-              <Link
-                to={{
-                  pathname: `/book-room/${room.id}`,
-                  state: { pricePerNight } // Pass pricePerNight as state
-                }}
-                className="btn btn-primary"
-              >
-                Book Room
-              </Link>
+              {!room.booked && (
+                <Link
+                  to={{
+                    pathname: `/book-room/${room.id}`,
+                    state: { pricePerNight } // Pass pricePerNight as state
+                  }}
+                  className="btn btn-primary"
+                >
+                  Book Room
+                </Link>
+              )}
             </div>
           );
         })}

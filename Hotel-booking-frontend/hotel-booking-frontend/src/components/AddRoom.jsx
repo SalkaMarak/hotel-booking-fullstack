@@ -5,7 +5,6 @@ import { createRoom } from '../services/ServiceConfig';
 const AddRoom = () => {
     const [formData, setFormData] = useState({
         roomType: '',
-        numberOfRooms: '',
         pricePerNight: '',
         images: [],
     });
@@ -31,7 +30,6 @@ const AddRoom = () => {
 
         const roomDetails = {
             roomType: formData.roomType,
-            numberOfRoomsAvailable: formData.numberOfRooms,  
             pricePerNight: formData.pricePerNight,
             hotelId: hotelId
         };
@@ -65,18 +63,6 @@ const AddRoom = () => {
                             id="roomType"
                             name="roomType"
                             value={formData.roomType}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="numberOfRooms">Number of Rooms</label>
-                        <input
-                            type="number"
-                            className="form-control"
-                            id="numberOfRooms"
-                            name="numberOfRooms"
-                            value={formData.numberOfRooms}
                             onChange={handleChange}
                             required
                         />

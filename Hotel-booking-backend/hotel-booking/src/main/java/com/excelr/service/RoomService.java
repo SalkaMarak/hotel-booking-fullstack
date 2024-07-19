@@ -1,14 +1,13 @@
 package com.excelr.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.excelr.dao.HotelRepository;
-import com.excelr.dao.RoomRepository;
 import com.excelr.dto.RoomDTO;
 import com.excelr.entity.Hotel;
 import com.excelr.entity.Room;
 import com.excelr.entity.RoomImage;
+import com.excelr.dao.HotelRepository;
+import com.excelr.dao.RoomRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.List;
@@ -25,8 +24,8 @@ public class RoomService {
     public RoomDTO createRoom(RoomDTO roomDTO) {
         Room room = new Room();
         room.setRoomType(roomDTO.getRoomType());
-        room.setNumberOfRoomsAvailable(roomDTO.getNumberOfRoomsAvailable());
         room.setPricePerNight(roomDTO.getPricePerNight());
+        room.setBooked(false); // Initialize as not booked
 
         Hotel hotel = hotelRepository.findById(roomDTO.getHotelId()).orElseThrow(() -> new RuntimeException("Hotel not found"));
         room.setHotel(hotel);
@@ -42,6 +41,7 @@ public class RoomService {
         roomRepository.save(room);
 
         roomDTO.setId(room.getId());
+        roomDTO.setBooked(room.isBooked());
         return roomDTO;
     }
 
@@ -49,8 +49,8 @@ public class RoomService {
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
 
         room.setRoomType(roomDTO.getRoomType());
-        room.setNumberOfRoomsAvailable(roomDTO.getNumberOfRoomsAvailable());
         room.setPricePerNight(roomDTO.getPricePerNight());
+        room.setBooked(roomDTO.isBooked());
 
         List<RoomImage> images = roomDTO.getImages().stream().map(imageData -> {
             RoomImage roomImage = new RoomImage();
@@ -75,8 +75,8 @@ public class RoomService {
             RoomDTO roomDTO = new RoomDTO();
             roomDTO.setId(room.getId());
             roomDTO.setRoomType(room.getRoomType());
-            roomDTO.setNumberOfRoomsAvailable(room.getNumberOfRoomsAvailable());
             roomDTO.setPricePerNight(room.getPricePerNight());
+            roomDTO.setBooked(room.isBooked());
             roomDTO.setHotelId(room.getHotel().getId());
 
             List<String> base64Images = room.getImages().stream()
@@ -88,5 +88,3 @@ public class RoomService {
         }).collect(Collectors.toList());
     }
 }
-
-
