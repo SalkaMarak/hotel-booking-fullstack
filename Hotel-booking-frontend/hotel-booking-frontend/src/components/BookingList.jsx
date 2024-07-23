@@ -4,7 +4,7 @@ import '../css/BookingList.css';
 
 const BookingsList = () => {
     const [bookings, setBookings] = useState([]);
-    const customerId = JSON.parse(localStorage.getItem('customer')).id; 
+    const customerId = JSON.parse(localStorage.getItem('customer')).id;
 
     useEffect(() => {
         fetchBookings();
@@ -12,7 +12,7 @@ const BookingsList = () => {
 
     const fetchBookings = async () => {
         try {
-            const response = await getCustomerBookings(customerId); 
+            const response = await getCustomerBookings(customerId);
             setBookings(response.data);
         } catch (error) {
             console.error('Error fetching bookings:', error);

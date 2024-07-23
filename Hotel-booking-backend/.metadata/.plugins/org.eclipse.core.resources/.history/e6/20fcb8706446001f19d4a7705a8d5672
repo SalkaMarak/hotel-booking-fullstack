@@ -59,21 +59,22 @@ public class AppConfig {
 //    }
     //------------------------------------
 //    {
-//        http.csrf().disable()
-//                .cors().and()
-//                .authorizeHttpRequests()
-//                .anyRequest()
-//                .permitAll();
-//        return http.build();
+//        http.csrf().disable().authorizeHttpRequests()
+//			.requestMatchers("api/hotels/all", "api/rooms/hotel/{hotelId}").permitAll()
+//			.requestMatchers("api/hotels/register", "api/rooms/register", "api/rooms/{id}", "api/hotels//{id}")
+//			.hasRole("ADMIN")
+//			.anyRequest()
+//			.authenticated().and().formLogin().and().build();
 //    }
     @Bean
     public SecurityFilterChain filter(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeHttpRequests()
-        	.requestMatchers("api/hotels/all", "api/rooms/hotel/{hotelId}").permitAll()
-        	.requestMatchers("api/hotels/register", "api/rooms/register", "api/rooms/{id}", "api/hotels//{id}")
-        	.hasRole("MANAGER")
-        	.anyRequest()
-        	.authenticated().and().formLogin().and().build();
+		        http.csrf().disable()
+		              .cors().and()
+		              .authorizeHttpRequests()
+		              .anyRequest()
+		              .permitAll();
+		      return http.build();
+        		
     }
 
     @Bean
@@ -81,7 +82,7 @@ public class AppConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         source.registerCorsConfiguration("/**", config);

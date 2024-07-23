@@ -68,7 +68,6 @@ const HotelList = () => {
               ))}
             </div>
             <Link to={`/rooms/${hotel.id}`} className="btn btn-primary">View Rooms</Link>
-            <Link to={`/add-room/${hotel.id}`} className="btn btn-primary">Add Room</Link>
           </div>
         ))}
       </div>

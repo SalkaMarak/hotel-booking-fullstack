@@ -61,5 +61,20 @@ export const cancelBooking = (bookingId) => {
 };
 
 export const getHotelById = (hotelId) => {
-    return axios.get(`${REST_API_BASE_URL}/hotels/${hotelId}`); // Adjust endpoint as needed
+    return axios.get(`${REST_API_BASE_URL}/hotels/${hotelId}`); 
+};
+
+export const deleteHotelById = (id) => {
+  return axios.delete(`${REST_API_BASE_URL}/${id}`);
+};
+
+export const loginAdmin = (credentials) => {
+    return axios.post(`${REST_API_BASE_URL}/admin/login`, credentials);
+  };
+
+  export const deleteRoom = (roomId) => {
+    return fetch(`${REST_API_BASE_URL}/api/rooms/${roomId}`, {
+        method: 'DELETE'
+    }).then(response => 
+        response.json());
   };

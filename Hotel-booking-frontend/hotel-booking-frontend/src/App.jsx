@@ -15,6 +15,10 @@ import HeaderComponent from './components/HeaderComponent'
 import FooterComponent from './components/FooterComponent'
 import CustomerRegistration from './components/CustomerRegistration'
 import CustomerLogin from './components/CustomerLogin'
+import AdminRegister from './components/AdminRegister'
+import AdminHotelList from './components/AdminHotelList'
+import AdminBookingsList from './components/AdminBookingList'
+import AdminRoomList from './components/AdminRoomList'
 
 function App() {
 
@@ -34,10 +38,13 @@ function App() {
             <Route path="/rooms/:hotelId" element={<RoomList />} />
             <Route path="/book-room/:roomId" element={<Booking />} />
             <Route path="/customerRegistration" element={< CustomerRegistration />} />
-
+            <Route path="/adminRegistration" element={< AdminRegister />} />
+            <Route path="/adminHotelList" element={< AdminHotelList />} />
+            <Route path="/adminBookingsList" element={ <AdminBookingsList />} />
             <Route path="/bookingsList" element={<BookingsList />} />
             <Route path="/customerRegistration" element={<CustomerRegistration />} />
             <Route path="/customerLogin" element={<CustomerLogin />} />
+            <Route path="/admin/hotels/:hotelId/rooms" element={<AdminRoomList />} />
           </Routes>
         <FooterComponent />
       </BrowserRouter>

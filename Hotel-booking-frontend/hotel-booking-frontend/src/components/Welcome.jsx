@@ -19,8 +19,8 @@ function Welcome() {
           <form action="/customerLogin">
               <input type="submit" value="Customer Login" />
           </form>
-          <form action="/customerLogin">
-              <input type="submit" value="Manager Login" />
+          <form action="/adminLogin">
+              <input type="submit" value="Admin Login" />
           </form>
       </div>
     </div>

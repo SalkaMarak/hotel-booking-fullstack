@@ -26,11 +26,15 @@ public class Hotel {
     private String address;
     private String contactInfo;
     private String description;
-    @ElementCollection //Using @ElementCollection provides flexibility in modeling relationships and storing collections of basic types or embeddable objects without needing to create separate entity classes for them.
+
+    @ElementCollection
     private List<String> amenities;
-    // Ensure to add @JsonBackReference to prevent recursion
+
     @JsonManagedReference
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY,  orphanRemoval = true)
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<HotelImage> images = new ArrayList<>();
 
+    // Add relationship to Room entity
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Room> rooms = new ArrayList<>();
 }

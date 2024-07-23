@@ -9,13 +9,14 @@ const RoomList = () => {
 
   useEffect(() => {
     fetchRooms();
-    fetchHotelName(); // Fetch the hotel name as well
+    fetchHotelName(); 
   }, [hotelId]);
 
   const fetchRooms = async () => {
     try {
       const response = await getRoomsByHotelId(hotelId);
       setRooms(response.data);
+      console.log(rooms)
     } catch (error) {
       console.error("Error fetching rooms:", error);
     }
@@ -23,8 +24,9 @@ const RoomList = () => {
 
   const fetchHotelName = async () => {
     try {
-      const response = await getHotelById(hotelId); // Assume this API call fetches hotel details
-      setHotelName(response.data.name); // Adjust according to your API response structure
+      const response = await getHotelById(hotelId); 
+      setHotelName(response.data.name); 
+      console.log(hotelName)
     } catch (error) {
       console.error("Error fetching hotel name:", error);
     }

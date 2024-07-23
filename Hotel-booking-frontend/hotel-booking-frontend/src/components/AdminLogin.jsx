@@ -1,74 +1,52 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginAdmin } from '../services/ServiceConfig';
 
 const AdminLogin = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if(validate()){
-            try {
-                //const response = await axios.post('/api/login', formData);
-                //console.log('Login successful', response.data);
-                // You can add logic here to handle successful login,
-                // such as saving a token or redirecting the user.
-                console.log("login successful")
-            } catch (error) {
-                console.error('There was an error logging in!', error);
-            }
-        } else{
-            console.log("Every field is required")
-        }
-    };
-
-    const validate = () => {
-        if(formData.email === '' || formData.password === '') return false;
-        else return true;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await loginAdmin({ email, password });
+      if (response.status === 200) {
+        localStorage.setItem('admin', JSON.stringify(response.data));
+        alert('Login successful');
+        navigate('/admin/hotelList'); 
+      }
+    } catch (error) {
+      alert('Login failed');
     }
+  };
 
-    return (
-        <div className="registration">
-        <div className="container mt-5">
-            <h2 className="mb-4">Admin Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email:</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password:</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                </div>
-                <button type="submit" className="btn btn-primary">Login</button>
-                <br/><br/><a href="/welcome">Go to Home</a>
-            </form>
+  return (
+    <div className="login-container">
+      <h2>Admin Login</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Email:</label>
+          <input 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
         </div>
+        <div className="form-group">
+          <label>Password:</label>
+          <input 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+          />
         </div>
-    );
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
 };
 
-export default AdminLogin
+export default AdminLogin;

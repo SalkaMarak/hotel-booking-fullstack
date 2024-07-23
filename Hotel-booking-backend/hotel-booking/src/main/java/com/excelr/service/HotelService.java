@@ -54,12 +54,12 @@ public class HotelService {
             return hotelDTO;
         }).collect(Collectors.toList());
     }
-    // Base64.getEncoder().encodeToString(image.getImageData()) converts each byte array (imageData) into a Base64-encoded string representation. This is often done when you need to convert binary data (like images) into a text format that can be easily stored, transmitted, or manipulated as strings.
-    
+
     public Hotel getHotelById(Long id) {
         return hotelRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public void deleteHotel(Long id) {
         hotelRepository.deleteById(id);
     }
