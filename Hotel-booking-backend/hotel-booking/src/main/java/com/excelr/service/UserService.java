@@ -6,34 +6,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
-    private PasswordEncoder pw;
+    private PasswordEncoder passwordEncoder;
 
-    public List<User> getAllCustomers() {
-        return userRepository.findAll();
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
-    public User getCustomerById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
-    public User saveCustomer(User u) {
-    	u.setPassword(pw.encode(u.getPassword()));
-        u.setRole("ROLE_USER");
-        userRepository.save(u);
-        return userRepository.save(u);
+    public Optional<User> updateUser(Long id, User user) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User updateUser = existingUser.get();
+            updateUser.setName(user.getName());
+            updateUser.setEmail(user.getEmail());
+            updateUser.setRole(user.getRole());
+            if (!user.getPassword().equals(existingUser.get().getPassword())) {
+                updateUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            userRepository.save(updateUser);
+            return Optional.of(updateUser);
+        } else {
+            return Optional.empty();
+        }
     }
 
-    public void deleteCustomer(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 }
-

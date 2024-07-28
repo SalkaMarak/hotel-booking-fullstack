@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { registerHotel } from '../services/ServiceConfig';
 import { useNavigate } from 'react-router-dom';
+import '../css/form.css'
 
 const HotelRegistration = () => {
     const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ const HotelRegistration = () => {
             description: formData.description,
             amenities: formData.amenities.split(",").map(item => item.trim()), 
         };
-
+        
         const formDataToSend = new FormData();
         formDataToSend.append('hotel', new Blob([JSON.stringify(hotelDetails)], { type: "application/json" }));
 
@@ -50,16 +51,17 @@ const HotelRegistration = () => {
             const response = await registerHotel(formDataToSend);
             console.log(response);
             console.log("Registered successfully");
-            navigate("/hotelList")
+            navigate("/hotelManagement")
         } catch (error) {
             console.error(error);
         }
     };
 
     return (
-       <div className="registration">
-        <div className="hotel-registration">
-            <h2>Hotel Registration</h2>
+        <>
+        <h2 style={{textAlign: 'center', margin: "20px 0 20px 0"}}>Hotel Registration</h2>
+       <div className="form-container">
+            
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Hotel Name</label>
@@ -135,10 +137,9 @@ const HotelRegistration = () => {
                 </div>
                 <br/>
                 <button type="submit" className="btn btn-primary">Register Hotel</button>
-                <a href="/welcome">Go to Home</a>
             </form>
         </div>
-       </div>
+        </>
     );
 };
 

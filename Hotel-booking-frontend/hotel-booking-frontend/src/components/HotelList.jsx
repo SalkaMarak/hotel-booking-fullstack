@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllHotels } from '../services/ServiceConfig';
+import '../css/hotellist.css';
 
 const HotelList = () => {
   const [hotels, setHotels] = useState([]);
@@ -14,8 +15,12 @@ const HotelList = () => {
   const fetchHotels = async () => {
     try {
       const response = await getAllHotels();
-      setHotels(response.data);
-      setFilteredHotels(response.data);  // Initialize filtered hotels
+      if (response && Array.isArray(response.data)) {
+        setHotels(response.data);
+        setFilteredHotels(response.data);
+      } else {
+        console.error('Unexpected data format:', response);
+      }
     } catch (error) {
       console.error("Error fetching hotels:", error);
     }
@@ -33,43 +38,49 @@ const HotelList = () => {
   };
 
   return (
-    <div className="hotel-list">
-      <h2>Hotel List</h2>
-      <hr/>
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search by location..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="search-input"
-        />
-        <button onClick={handleSearchClick}>Search</button>
+    <div className="hotel-list-wrapper">
+      <div className="header">
+        <h2 className="hotel-list-title">Hotel List</h2>
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search by location..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="search-input form-control"
+          />
+          <button onClick={handleSearchClick} className="search-button btn btn-primary">Search</button>
+        </div>
       </div>
-      <hr/>
-      <div className="hotel-list-container">
-        {filteredHotels.map(hotel => (
-          <div key={hotel.id} className="hotel-card">
-            <h3>{hotel.name}</h3>
-            <p><strong>Address:</strong> {hotel.address}</p>
-            <p><strong>Contact Info:</strong> {hotel.contactInfo}</p>
-            <p><strong>Description:</strong> {hotel.description}</p>
-            <div className="amenities">
-              <strong>Amenities:</strong>
-              <ul>
-                {hotel.amenities.map((amenity, index) => (
-                  <li key={index}>{amenity}</li>
-                ))}
-              </ul>
+      <div className="hotel-list">
+        {filteredHotels.length > 0 ? (
+          filteredHotels.map(hotel => (
+            <div key={hotel.id} className="hotel-card card">
+              <div className="card-body">
+                <h3 className="card-title">{hotel.name}</h3>
+                <p className="card-text"><strong>Address:</strong> {hotel.address}</p>
+                <p className="card-text"><strong>Contact Info:</strong> {hotel.contactInfo}</p>
+                <p className="card-text"><strong>Description:</strong> {hotel.description}</p>
+                <div className="amenities">
+                  <strong>Amenities:</strong>
+                  <ul>
+                    {hotel.amenities.map((amenity, index) => (
+                      <li key={index}>{amenity}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="hotel-images">
+                  {hotel.images.map((image, index) => (
+                    <img key={index} src={`data:image/jpeg;base64,${image}`} alt={`Hotel Image ${index + 1}`} className="img-fluid" />
+                  ))}
+                </div>
+                <Link to={`/rooms/${hotel.id}`} className="btn btn-primary">View Rooms</Link>
+              </div>
             </div>
-            <div className="hotel-images">
-              {hotel.images.map((image, index) => (
-                <img key={index} src={`data:image/jpeg;base64,${image}`} alt={`Hotel Image ${index + 1}`} />
-              ))}
-            </div>
-            <Link to={`/rooms/${hotel.id}`} className="btn btn-primary">View Rooms</Link>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-center">No hotels found.</p>
+        )}
       </div>
     </div>
   );

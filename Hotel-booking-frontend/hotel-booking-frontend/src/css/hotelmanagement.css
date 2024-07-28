@@ -1,0 +1,93 @@
+/* hotelmanagement.css */
+
+.hotel-management {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.search-button {
+  padding: 10px;
+}
+
+.hotel-table {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  border-collapse: collapse;
+}
+
+.table-header, .table-row {
+  display: contents;
+}
+
+.table-header {
+  font-weight: bold;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #ddd;
+}
+
+.table-cell {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.table-row:nth-child(odd) .table-cell {
+  background-color: #f9f9f9;
+}
+
+.hotel-image {
+  width: 100px;
+  height: auto;
+  object-fit: cover;
+}
+
+.no-results {
+  grid-column: span 8;
+  text-align: center;
+  padding: 20px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}

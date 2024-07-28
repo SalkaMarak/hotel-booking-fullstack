@@ -1,54 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../css/HeaderComponent.css'; // Import your CSS file
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import '../css/HeaderComponent.css'; 
 
 const HeaderComponent = () => {
   const [userName, setUserName] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const customerJSON = localStorage.getItem('customer');
-    const adminJSON = localStorage.getItem('admin');
-
-    if (customerJSON) {
-      const customer = JSON.parse(customerJSON);
-      setUserName(customer.name);
-      setIsAdmin(false);
-    } else if (adminJSON) {
-      const admin = JSON.parse(adminJSON);
-      setUserName(admin.name);
-      setIsAdmin(true);
+    const userJSON = localStorage.getItem('user');
+    if (userJSON) {
+      try {
+        const user = JSON.parse(userJSON);
+        setUserName(user.name);
+        setIsAdmin(user.role === 'admin');
+      } catch (error) {
+        console.error('Error parsing user JSON:', error);
+        localStorage.removeItem('user');
+      }
     }
-  }, []); // Empty dependency array ensures this effect runs only once
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('customer'); // Clear the stored customer data
-    localStorage.removeItem('admin'); // Clear the stored admin data
-    setUserName(''); // Clear the userName state
-    setIsAdmin(false); // Reset admin status
-    window.location.href = '/'; // Redirect to the home page
+    localStorage.removeItem('user');
+    setUserName('');
+    setIsAdmin(false); 
+    window.location.href = '/'; 
   };
 
   return (
-    <header className="header-container">
-      <div className="left-links">
-        <Link to="/">Home</Link>
-        <Link to={isAdmin ? "/adminHotelList" : "/hotelList"}>Hotels</Link>
+    <header className="header-container container-fluid">
+      <div className="left-links d-flex align-items-center">
+        <Link to="/" className="nav-link text-white">Home</Link>
+        <Link to={isAdmin ? "/hotelManagement" : "/hotelList"} className="nav-link text-white">Hotels</Link>
+        {isAdmin && <Link to="/registerHotel" className="nav-link  text-white">Add Hotel</Link>}
       </div>
-      <div className="logo-container">
-        <h2>HotelBooking</h2>
+      <div className="logo-container text-center text-white">
+        <h2><strong>FindHotels.com</strong></h2>
       </div>
-      <div className="right-links">
+      <div className="right-links d-flex align-items-center">
         {userName ? (
           <>
-            <span>Welcome, {userName}</span>
-            <Link to={isAdmin ? "/adminBookingsList" : "/bookingsList"}>My Bookings</Link>
-            <button onClick={handleLogout}>Logout</button>
+            <span className="navbar-text text-white">Welcome, {isAdmin ? 'Admin' : userName}</span>
+            <Link to={isAdmin ? "/adminBookingsList" : "/bookingsList"} className="btn btn-outline-info btn-sm">
+              {isAdmin ? "All Bookings" : "My Bookings"}
+            </Link>
+            <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">Logout</button>
           </>
         ) : (
           <>
-            <Link to="/customerLogin">Login</Link>
-            <Link to="/customerRegistration">Register</Link>
+            <Link to="/login" className="btn btn-outline-light btn-sm">Login</Link>
+            <Link to="/registration" className="btn btn-outline-warning btn-sm">Register</Link>
           </>
         )}
       </div>

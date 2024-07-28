@@ -22,12 +22,6 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    //@JsonBackReference
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bookings"})
-    private Room room;
-
     @Column(name = "check_in_date")
     private LocalDate checkInDate;
 
@@ -50,7 +44,12 @@ public class Booking {
     private Double refundAmount;
     
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    @JsonBackReference
+    private Room room;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("bookings")
-    @JoinColumn(name = "customer_id")
-    private Customer customer; 
+    @JoinColumn(name = "user_id")
+    private User user;
 }

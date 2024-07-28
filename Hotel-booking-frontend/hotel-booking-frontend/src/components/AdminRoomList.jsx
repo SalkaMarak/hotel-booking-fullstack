@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getRoomsByHotelId, deleteRoom, getHotelById } from '../services/ServiceConfig'; 
+import '../css/roomlist.css'
 
 const AdminRoomList = () => {
   const { hotelId } = useParams();
@@ -40,9 +41,10 @@ const AdminRoomList = () => {
   };
 
   return (
-    <div className="hotel-list">
-      <h2>Rooms for {hotelName || 'Loading...'}</h2>
-      <div className="hotel-list-container">
+    <div className="container">
+      <h2 style={{margin: "20px 0 20px 10px"}}>Rooms Available</h2>
+      {/* <h2>Rooms for {hotelName || 'Loading...'}</h2> */}
+      <div className="room-list-container">
         {rooms.map(room => (
           <div key={room.id} className="hotel-card">
             <h3>{room.roomType}</h3>

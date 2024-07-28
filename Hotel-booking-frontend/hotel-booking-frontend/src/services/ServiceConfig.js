@@ -1,80 +1,87 @@
 import axios from 'axios';
 
-const REST_API_BASE_URL = 'http://localhost:8080/api'; // Define the base URL for your API
+const REST_API_BASE_URL = 'http://localhost:8080/api';
 
-// Define your API calls here
+const axiosInstance = axios.create({
+  baseURL: REST_API_BASE_URL,
+});
+
+
 export const registerHotel = (formData) => {
-    return axios.post(`${REST_API_BASE_URL}/hotels/register`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    });
+  return axios.post(`${REST_API_BASE_URL}/hotels/register`, formData, {
+      headers: {
+          'Content-Type': 'multipart/form-data'
+      }
+  });
 };
 
-export const getAllHotels = () => axios.get(`${REST_API_BASE_URL}/hotels/all`);
-
-export const registerCustomer = (customer) => axios.post(`${REST_API_BASE_URL}/customers/register`, customer);
-export const loginCustomer = (user) => axios.post(`${REST_API_BASE_URL}/customers/login`, user);
-
-export const registerUser = (user) => axios.post(`${REST_API_BASE_URL}/new`, user);
-
-// export const loginUser = (user) => axios.post(`${REST_API_BASE_URL}`);
+export const getAllHotels = () => axios.get(REST_API_BASE_URL + '/hotels/all');
 
 export const createRoom = (formData) => {
-    return axios.post(`${REST_API_BASE_URL}/rooms/register`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+  return axiosInstance.post('/rooms/register', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };
 
 export const getRoomsByHotelId = (hotelId) => {
-    return axios.get(`${REST_API_BASE_URL}/rooms/hotel/${hotelId}`);
-};
-
-export const bookRoom = (bookingData) => {
-    return axios.post(`${REST_API_BASE_URL}/bookings`, bookingData);
+  return axiosInstance.get(`/rooms/hotel/${hotelId}`);
 };
 
 export const createBooking = (bookingData) => {
-    return axios.post(`${REST_API_BASE_URL}/bookings`, bookingData, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
+  console.log("Booking Data:", bookingData); // Log the data being sent
+  return axios.post(`${REST_API_BASE_URL}/bookings`, bookingData, {
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  });
 };
 
 export const getCustomerBookings = (customerId) => {
-    return axios.get(`${REST_API_BASE_URL}/bookings/customer/${customerId}`);
+  return axiosInstance.get(`/bookings/user/${customerId}`);
 };
 
-export const loginManager = (credentials) => {
-    return axios.post(`${REST_API_BASE_URL}/managers/login`, credentials);
-};
-  
 export const getAllBookings = () => {
-    return axios.get(`${REST_API_BASE_URL}/bookings`);
+  return axiosInstance.get('/bookings');
+};
+
+export const reactivateBooking = (bookingId) => {
+  return axiosInstance.post(`/bookings/reactivate/${bookingId}`);
 };
 
 export const cancelBooking = (bookingId) => {
-    return axios.post(`${REST_API_BASE_URL}/bookings/cancel/${bookingId}`);
+  return axiosInstance.post(`/bookings/cancel/${bookingId}`);
 };
 
 export const getHotelById = (hotelId) => {
-    return axios.get(`${REST_API_BASE_URL}/hotels/${hotelId}`); 
+  return axiosInstance.get(`/hotels/${hotelId}`);
 };
 
 export const deleteHotelById = (id) => {
-  return axios.delete(`${REST_API_BASE_URL}/${id}`);
+  return axiosInstance.delete(`/hotels/${id}`);
 };
 
-export const loginAdmin = (credentials) => {
-    return axios.post(`${REST_API_BASE_URL}/admin/login`, credentials);
-  };
+export const deleteRoom = (roomId) => {
+  return axiosInstance.delete(`/rooms/${roomId}`);
+};
 
-  export const deleteRoom = (roomId) => {
-    return fetch(`${REST_API_BASE_URL}/api/rooms/${roomId}`, {
-        method: 'DELETE'
-    }).then(response => 
-        response.json());
-  };
+// User registration
+export const registerUser = (user) => {
+  return axiosInstance.post('/users/register', user);
+};
+
+// Clear user details when logging out
+export const logoutUser = () => {
+  localStorage.removeItem('user'); // Remove user from localStorage
+};
+
+export const loginUser = async (credentials) => {
+  try {
+    const response = await axiosInstance.post('/users/login', credentials);
+    return response;
+  } catch (error) {
+    console.error('Login failed:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};

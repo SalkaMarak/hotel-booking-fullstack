@@ -14,19 +14,16 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
 import com.excelr.service.config.UserInfoUserDetailsService;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AppConfig {
-	
+
     @Bean
     public UserDetailsService userDetServ() {
-        return new UserInfoUserDetailsService();  // Use your custom UserDetailsService
+        return new UserInfoUserDetailsService();
     }
 
     @Bean
@@ -42,44 +39,33 @@ public class AppConfig {
         return dao;
     }
 
-//    @Bean
-//    public SecurityFilterChain filter(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//                .cors().and()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/api/users", "/api/new", "/api/hotels/register")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin()
-//                .and()
-//                .httpBasic();
-//        return http.build();
-//    }
-    //------------------------------------
-//    {
-//        http.csrf().disable().authorizeHttpRequests()
-//			.requestMatchers("api/hotels/all", "api/rooms/hotel/{hotelId}").permitAll()
-//			.requestMatchers("api/hotels/register", "api/rooms/register", "api/rooms/{id}", "api/hotels//{id}")
-//			.hasRole("ADMIN")
-//			.anyRequest()
-//			.authenticated().and().formLogin().and().build();
-//    }
     @Bean
     public SecurityFilterChain filter(HttpSecurity http) throws Exception {
-		        http.csrf().disable()
-		              .cors().and()
-		              .authorizeHttpRequests()
-		              .anyRequest()
-		              .permitAll();
-		      return http.build();
-        		
+    	/*
+    	  return http
+	            .csrf().disable()
+	            .authorizeHttpRequests()
+	                .requestMatchers("/api/hotels/hotel/input", "/api/users/user/{id}", "/api/user/register", "/api/hotels/welcome")
+	                .permitAll()
+	                .requestMatchers("/api/hotels/{id}", "/api/bookings/all", "/api/rooms/{id}")
+	                .hasRole("admin")
+	                .anyRequest()
+	                .authenticated()
+	                .and()
+	            .formLogin().and()
+	            .build();
+    	*/
+    	
+        http.csrf().disable() 
+            .authorizeRequests()
+            .anyRequest().permitAll();
+
+        return http.build();
     }
 
     @Bean
     public CorsFilter corsFilter() {
-    	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");
@@ -89,3 +75,4 @@ public class AppConfig {
         return new CorsFilter(source);
     }
 }
+

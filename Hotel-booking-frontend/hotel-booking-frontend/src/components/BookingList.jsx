@@ -4,7 +4,7 @@ import '../css/BookingList.css';
 
 const BookingsList = () => {
     const [bookings, setBookings] = useState([]);
-    const customerId = JSON.parse(localStorage.getItem('customer')).id;
+    const customerId = JSON.parse(localStorage.getItem('user')).id;
 
     useEffect(() => {
         fetchBookings();

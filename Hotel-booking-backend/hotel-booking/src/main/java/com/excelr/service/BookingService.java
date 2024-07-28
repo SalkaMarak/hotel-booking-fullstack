@@ -1,14 +1,14 @@
 package com.excelr.service;
 
 import com.excelr.dao.BookingRepository;
-import com.excelr.dao.CustomerRepository;
 import com.excelr.dao.RoomRepository;
+import com.excelr.dao.UserRepository;
 import com.excelr.dto.BookingDTO;
 import com.excelr.dto.BookingResponseDTO;
 import com.excelr.dto.RoomDTO;
 import com.excelr.entity.Booking;
-import com.excelr.entity.Customer;
 import com.excelr.entity.Room;
+import com.excelr.entity.User;
 
 import jakarta.transaction.Transactional;
 
@@ -27,7 +27,7 @@ public class BookingService {
     private BookingRepository bookingRepository;
     
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -37,8 +37,8 @@ public class BookingService {
         Room room = roomRepository.findById(bookingDTO.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid room ID"));
 
-        Customer customer = customerRepository.findById(bookingDTO.getCustomerId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
+        User user = userRepository.findById(bookingDTO.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 
         if (room.isBooked()) {
             throw new IllegalStateException("Room is already booked");
@@ -57,7 +57,7 @@ public class BookingService {
         booking.setCustomerEmail(bookingDTO.getCustomerEmail());
         booking.setCancellationStatus(false);
         booking.setRefundAmount(0.0);
-        booking.setCustomer(customer); // Set the customer
+        booking.setUser(user); // Set the user
 
         room.setBooked(true); // Mark room as booked
         roomRepository.save(room); // Save room status
@@ -91,8 +91,8 @@ public class BookingService {
         return bookingRepository.findAll().stream().map(this::convertToResponseDTO).collect(Collectors.toList());
     }
 
-    public List<BookingResponseDTO> findBookingsByCustomerId(int customerId) {
-        return bookingRepository.findByCustomerId(customerId).stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+    public List<BookingResponseDTO> findBookingsByUserId(Long userId) {
+        return bookingRepository.findByUserId(userId).stream().map(this::convertToResponseDTO).collect(Collectors.toList());
     }
 
     private BookingResponseDTO convertToResponseDTO(Booking booking) {
@@ -114,12 +114,25 @@ public class BookingService {
         roomDTO.setHotelId(booking.getRoom().getHotel().getId());
         roomDTO.setHotelName(booking.getRoom().getHotel().getName());
         roomDTO.setImages(null);
-        // roomDTO.setImages(booking.getRoom().getImages().stream()
-        //         .map(image -> Base64.getEncoder().encodeToString(image.getData()))
-        //         .collect(Collectors.toList()));
 
         responseDTO.setRoom(roomDTO);
 
         return responseDTO;
+    }
+    @Transactional
+    public Booking reactivateBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid booking ID"));
+
+        if (booking.isCancellationStatus()) {
+            booking.setCancellationStatus(false);
+            booking.setRefundAmount(0.0);
+
+            Room room = booking.getRoom();
+            room.setBooked(true);
+            roomRepository.save(room);
+        }
+
+        return bookingRepository.save(booking);
     }
 }

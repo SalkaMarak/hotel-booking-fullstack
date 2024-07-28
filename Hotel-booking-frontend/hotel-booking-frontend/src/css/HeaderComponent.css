@@ -3,9 +3,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.178);
+  position: relative; 
+  background-color: rgba(10, 12, 169, 0.906);
   backdrop-filter: blur(10px);
-  position: relative; /* Added for centering purposes */
 }
 
 .left-links,
@@ -16,7 +16,7 @@
 }
 
 .logo-container {
-  position: absolute; /* Changed to absolute positioning */
+  position: absolute; 
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -31,7 +31,7 @@ h2 {
   .header-container {
     flex-direction: column;
     padding: 0.5rem;
-    align-items: center; /* Center all items in the column layout */
+    align-items: center; 
   }
 
   .left-links,
@@ -42,6 +42,6 @@ h2 {
   }
 
   .logo-container {
-    order: 2; /* Ensure the logo appears in the center on smaller screens */
+    order: 2; 
   }
 }

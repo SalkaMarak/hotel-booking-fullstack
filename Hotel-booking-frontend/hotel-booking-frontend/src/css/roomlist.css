@@ -1,0 +1,65 @@
+/* roomlist.css */
+
+.room-list {
+  padding: 20px;
+  background: url('https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.room-list-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .room-card {
+    background: rgba(255, 255, 255, 0.9); /* Slightly less transparent background */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    box-sizing: border-box;
+    text-align: center;
+    max-width: 500px; 
+    overflow: hidden; 
+  }
+  
+  .room-card h3 {
+    margin-top: 0;
+  }
+  
+  .room-images {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  
+  .room-images img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin: 5px;
+    border-radius: 5px; /* Rounded corners for images */
+  }
+  
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-decoration: none;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }

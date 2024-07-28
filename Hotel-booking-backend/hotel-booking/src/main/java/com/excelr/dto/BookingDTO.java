@@ -2,7 +2,6 @@ package com.excelr.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDate;
 
 @Getter
@@ -13,5 +12,5 @@ public class BookingDTO {
     private LocalDate checkOutDate;
     private String customerName;
     private String customerEmail;
-    private int customerId;
+    private Long userId;
 }

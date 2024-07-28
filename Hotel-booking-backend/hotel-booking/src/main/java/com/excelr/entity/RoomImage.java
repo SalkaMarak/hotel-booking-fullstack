@@ -1,5 +1,7 @@
 package com.excelr.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,7 +16,8 @@ public class RoomImage {
     @Column(name = "image_data", columnDefinition = "LONGBLOB")
     private byte[] data;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "room_id")
     private Room room;
 }

@@ -16,4 +16,3 @@ public class HotelDTO {
         this.images = images;
     }
 }
-

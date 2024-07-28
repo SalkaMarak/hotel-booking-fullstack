@@ -1,17 +1,8 @@
 package com.excelr.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,23 +29,3 @@ public class HotelImage {
     @Column(name = "image_data", columnDefinition = "LONGBLOB")
     private byte[] imageData;
 }
-
-/*
- @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "hotel_id")
-    private Hotel hotel;
-
-    @Lob
-    @Column(name = "data", columnDefinition = "LONGBLOB")
-    private byte[] data;
-    
-    public void setImageData(byte[] imageData) {
-        this.data = imageData;
-    }
-}
- */

@@ -1,4 +1,3 @@
-//this is for adding the users
 package com.excelr.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,31 +23,11 @@ public class UserInfoService {
         userRepo.save(u);
         return "User added successfully to the db";
     }
+    
+    public String insertUserInfo(User u, String role) {
+        u.setPassword(pw.encode(u.getPassword()));
+        u.setRole(role);  
+        userRepo.save(u);
+        return "User added successfully to the db with role: " + role;
+    }
 }
-
-
-/* this is a service layer component responsible for managing user information, particularly handling user registration and password encoding.
-
-
-	Key Responsibilities:
-
--Insert UserInfo: The insertUserInfo method saves a new user to the database after encoding the password.
-
-
-========================
-
- Integration and Flow: of these three classes
-1. User Registration:
-		-When a new user registers, the UserInfoService is used to save the user information in the database with an encoded password.
-
-2. User Authentication:
-		-During the authentication process, Spring Security uses the UserInfoUserDetailsService to load user details based on the username provided.
-		-UserInfoUserDetailsService fetches the UserInfo from the database and adapts it to a UserInfoUserDetails object.
-		-Spring Security then uses the UserInfoUserDetails object to check the user's credentials and authorities.
-
-*By organizing these classes in this way, you separate concerns effectively:
-		-UserInfoService handles user data management.
-		-UserInfoUserDetails adapts your entity to Spring Security's UserDetails.
-		-UserInfoUserDetailsService integrates with Spring Security to fetch user details for authentication.
- 
- */

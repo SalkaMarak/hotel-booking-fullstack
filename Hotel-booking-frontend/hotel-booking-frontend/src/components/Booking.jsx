@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createBooking } from '../services/ServiceConfig';
+import '../css/form.css'
 
 const BookingForm = () => {
     const { roomId } = useParams();
+    console.log(roomId);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         checkInDate: '',
@@ -12,9 +14,8 @@ const BookingForm = () => {
         customerEmail: ''
     });
 
-    // Fetch customer data from localStorage
-    const customerJSON = localStorage.getItem('customer');
-    const customer = customerJSON ? JSON.parse(customerJSON) : null;
+    const userJSON = localStorage.getItem('user');
+    const user = userJSON ? JSON.parse(userJSON) : null;
 
     const handleChange = (e) => {
         setFormData({
@@ -26,29 +27,28 @@ const BookingForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Check if customer data exists in localStorage
-        if (!customer) {
-            console.error('Customer data not found in localStorage');
+        if (!user) {
+            console.error('user data not found in localStorage');
             return;
         }
 
         const bookingData = {
             ...formData,
             roomId: parseInt(roomId),
-            customerId: customer.id  // Use customer id from localStorage
+            userId: user.id  
         };
 
         try {
             const response = await createBooking(bookingData);
             console.log('Booking created:', response.data);
-            navigate('/welcome'); // Navigate to another page after successful booking
+            navigate('/hotelList'); 
         } catch (error) {
             console.error('Error creating booking:', error);
         }
     };
 
     return (
-        <div className="registration">
+        <div className="form-container">
             <div className="booking-form">
                 <h2>Book Room</h2>
                 <form onSubmit={handleSubmit}>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createRoom } from '../services/ServiceConfig';
+import '../css/form.css'
 
 const AddRoom = () => {
     const [formData, setFormData] = useState({
@@ -44,16 +45,16 @@ const AddRoom = () => {
         try {
             const response = await createRoom(formDataToSend);
             console.log('Room created:', response.data);
-            navigate('/hotelList');
+            navigate('/hotelManagement');
         } catch (error) {
             console.error('Error creating room:', error);
         }
     };
 
     return (
-        <div className="registration">
+        <div className="form-container">
             <div className="add-room">
-                <h2>Add Room</h2>
+                <h2 style={{textAlign: 'center', margin: "20px 0 20px 0"}}>Add Room</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="roomType">Room Type</label>
